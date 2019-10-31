@@ -88,7 +88,7 @@ namespace Oppimispäiväkirja
                         aiheet[aiheet.Count - 1] += ";" + "1.1.0001 0.00.00)"; //on valmis-päivämäärä on null
                         Console.WriteLine("Kuinka kauan uskot, että opiskelussa kestää (tunteja)?");
                         aiheet[aiheet.Count - 1] += ";" + Console.ReadLine(); //arvio opiskelun kestosta tunteina
-                        aiheet[aiheet.Count - 1] += ";" + "null"; //kauan kesti todellisuudessa = null
+                        aiheet[aiheet.Count - 1] += ";" + "0"; //kauan kesti todellisuudessa = null
                         break;
 
                     case 2:
@@ -143,21 +143,27 @@ namespace Oppimispäiväkirja
             return oliot;
         }
 
-        public Topic TeeListastaOlioita(int kohteennro,string[] arvot, bool onMuokkaus)
+        public Topic TeeListastaOlioita(int kohteennro, string[] arvot, bool onMuokkaus)
         {
             Topic uusiaihe = new Topic();
 
-            if(onMuokkaus)
-            uusiaihe.Id = oliot[kohteennro - 1].Id;
+            if (onMuokkaus)
+                uusiaihe.Id = oliot[kohteennro - 1].Id;
             else
-            uusiaihe.Id = Convert.ToInt32(arvot[0]);
+                uusiaihe.Id = Convert.ToInt32(arvot[0]);
 
             uusiaihe.Title = arvot[1];
             uusiaihe.Description = arvot[2];
             uusiaihe.Source = arvot[3];
             uusiaihe.InProgress = Convert.ToBoolean(arvot[4]);
-            uusiaihe.StartLearningDate = Convert.ToDateTime(arvot[5]);
-            uusiaihe.CompletionDate = Convert.ToDateTime(arvot[6]);
+
+            DateTime result;
+            DateTime.TryParse(arvot[5], out result);
+            uusiaihe.StartLearningDate = result;
+
+            DateTime.TryParse(arvot[6], out result);
+            uusiaihe.CompletionDate = result;
+
             uusiaihe.EstimatedTimeToMaster = Convert.ToDouble(arvot[7]);
             uusiaihe.TimeSpent = Convert.ToDouble(arvot[8]);
 
